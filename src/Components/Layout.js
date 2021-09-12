@@ -11,6 +11,12 @@ import {
 	Toolbar,
 	Avatar,
 	Button,
+	Modal,
+	Backdrop,
+	Fade,
+	Container,
+	Grid,
+	Fab,
 } from "@material-ui/core";
 
 import CompareIcon from "@material-ui/icons/Compare";
@@ -28,6 +34,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import InfoIcon from "@material-ui/icons/Info";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth";
@@ -67,6 +75,18 @@ const useStyles = makeStyles((theme) => {
 			marginLeft: theme.spacing(2),
 			marginRight: theme.spacing(2),
 		},
+		modal: {
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+		},
+		containerModal: {
+			backgroundColor: theme.palette.background.paper,
+			border: "2px solid #000",
+			boxShadow: theme.shadows[5],
+			width: "30rem",
+			height: "16rem",
+		},
 	};
 });
 
@@ -76,6 +96,7 @@ export default function Layout({ children }) {
 	const location = useLocation();
 	const { user, login, logout } = useContext(AuthContext);
 	const context = useContext(AuthContext);
+	const [openModal, setOpenModal] = useState(true);
 
 	const navItems = [
 		{
@@ -144,7 +165,7 @@ export default function Layout({ children }) {
 		} else {
 			history.push("/login");
 		}
-			const demoData = {
+		const demoData = {
 			address: "Calea Eroilor 10, Mun. Ovidiu, Arad, CP 335401",
 			companyName: "LandRank",
 			email: "luc",
@@ -168,7 +189,15 @@ export default function Layout({ children }) {
 					<Typography variant="h6" noWrap className={classes.date}>
 						{format(new Date(), "do MMMM Y")}
 					</Typography>
-					<Typography variant="h6">Demonstrative release</Typography>
+					<ReportProblemIcon color="secondary" />
+					<Typography variant="h6">Database Error </Typography>
+					<Button
+						variant="contained"
+						onClick={() => setOpenModal(!openModal)}
+						style={{ marginLeft: "10px" }}
+					>
+						<InfoIcon /> info
+					</Button>
 					<Typography variant="h6" noWrap className={classes.date}>
 						{navItems.path == location.pathname ? navItems.text : ""}
 					</Typography>
@@ -226,9 +255,54 @@ export default function Layout({ children }) {
 				<div className={classes.toolbar}></div>
 				{children}
 			</div>
-			{/* <div>
-				<h2>Footer zone</h2>
-			</div> */}
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				className={classes.modal}
+				open={openModal}
+				onClose={() => setOpenModal(false)}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 100,
+				}}
+			>
+				<Fade in={openModal}>
+					<Container className={classes.containerModal}>
+						<Typography
+							variant="h5"
+							style={{
+								textAlign: "center",
+								paddingTop: "30px",
+								paddingBottom: "10px",
+							}}
+						>
+							Back-end server database unreachable at the moment...
+						</Typography>
+						<Typography variant="h6" style={{ textAlign: "center" }}>
+							<InfoIcon color="primary" /> Loaded static demonstrative database.
+						</Typography>
+						<Typography variant="h6" style={{ textAlign: "center" }}>
+							<InfoIcon color="primary" /> Creating & Editing entities not
+							supported.
+						</Typography>
+						<hr />
+						<Grid container justifyContent="flex-end">
+							<>
+								<Fab
+									variant="extended"
+									color="primary"
+									className={classes.removeIcon}
+									onClick={() => setOpenModal(false)}
+								>
+									<ArrowBackIcon />
+									Proceed
+								</Fab>
+							</>
+						</Grid>
+					</Container>
+				</Fade>
+			</Modal>
 		</div>
 	);
 }
