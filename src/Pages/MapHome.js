@@ -125,8 +125,6 @@ export default function MapHome() {
 	const [selectedMarker, setSelectedMarker] = useState(null);
 	const [openSellerInfo, setOpenSellerInfo] = useState(false);
 
-	const [openModal, setOpenModal] = useState(true);
-
 	useEffect(() => {
 		setLands(TempLands);
 	}, [markers, notify]);
@@ -510,54 +508,6 @@ export default function MapHome() {
 				{...{ setOpenSellerInfo, openSellerInfo, setNotify }}
 				seller={selectedLand.seller}
 			/>
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				className={classes.modal}
-				open={openModal}
-				onClose={() => setOpenModal(false)}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 100,
-				}}
-			>
-				<Fade in={openModal}>
-					<Container className={classes.containerModal}>
-						<Typography
-							variant="h5"
-							style={{
-								textAlign: "center",
-								paddingTop: "30px",
-								paddingBottom: "10px",
-							}}
-						>
-							Back-end server database unreachable at the moment...
-						</Typography>
-						<Typography variant="h6" style={{ textAlign: "center" }}>
-							<InfoIcon color="primary" /> Loaded static demonstrative database.
-						</Typography>
-						<Typography variant="h6" style={{ textAlign: "center" }}>
-							<InfoIcon color="primary" /> Creating & Editing entities not
-							supported.
-						</Typography>
-						<hr />
-						<Grid container justifyContent="flex-end">
-							<>
-								<Fab
-									variant="extended"
-									color="primary"
-									className={classes.removeIcon}
-									onClick={() => setOpenModal(false)}
-								>
-									<ArrowBackIcon />
-									Proceed
-								</Fab>
-							</>
-						</Grid>
-					</Container>
-				</Fade>
-			</Modal>
 		</>
 	);
 }
