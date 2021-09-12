@@ -144,6 +144,21 @@ export default function Layout({ children }) {
 		} else {
 			history.push("/login");
 		}
+			const demoData = {
+			address: "Calea Eroilor 10, Mun. Ovidiu, Arad, CP 335401",
+			companyName: "LandRank",
+			email: "luc",
+			fullName: "Lucian Teneriu",
+			id: "ae5cbff6-90f1-4c6e-9212-cd5a21800d75",
+			landAreas: null,
+			notes: null,
+			phoneNumber: "0770973082",
+			userName: "Lucian_T",
+			zone: "South East",
+		};
+		const token =
+			"cCI6IkpXVCJ9.eyJVc2VySUQiOiJhZTVjYmZmNi05MGYxLTRjNmUtOTIxMi1jZDVhMjE4MDBkNzUiLCJuYmYiOjE2MzE0MzQ3MDksImV4cCI6MTYzMTUyMTEwOSwiaWF0IjoxNjMxNDM0NzA5fQ._AEWKg3N0kTqWrqtEcIyPpZMU3W9Mec2jGD-SxPHKho'";
+		context.login(demoData, token);
 	}, []);
 
 	return (
