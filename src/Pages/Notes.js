@@ -58,7 +58,7 @@ export default function Notes() {
 	const [openModal, setOpenModal] = useState(false);
 	const [openDelete, setOpenDelete] = useState({ open: false, id: "" });
 	const [update, setUpdate] = useState(false);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({
 		for: "",
 		title: "",
