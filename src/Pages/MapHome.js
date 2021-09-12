@@ -114,7 +114,7 @@ export default function MapHome() {
 				setSelectedMarker(getCenter(selectedLand.geoPins));
 			console.log("selected:", selectedLand);
 		}
-	}, [lands, loading]);
+	}, [selectedLand]);
 
 	const onMapClick = useCallback((event) => {
 		setMarkers((current) => [
