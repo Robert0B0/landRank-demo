@@ -24,6 +24,12 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
+	Fab,
+	Fade,
+	Backdrop,
+	Modal,
+	Container,
+	makeStyles,
 } from "@material-ui/core";
 
 import Rating from "@material-ui/lab/Rating";
@@ -45,6 +51,9 @@ import Notification from "../Components/Notification";
 import { LandCompare } from "../context/compare";
 import LandModalDelete from "../Components/Land/LandModalDelete";
 import SellerInfo from "../Components/Land/SellerInfo";
+import InfoIcon from "@material-ui/icons/Info";
+import WarningIcon from "@material-ui/icons/Warning";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import { TempLands } from "../api/TempDB";
 
@@ -68,6 +77,21 @@ const mapSettings = {
 	mapTypeId: "satellite",
 };
 
+const useStyles = makeStyles((theme) => ({
+	modal: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	containerModal: {
+		backgroundColor: theme.palette.background.paper,
+		border: "2px solid #000",
+		boxShadow: theme.shadows[5],
+		width: "30rem",
+		height: "16rem",
+	},
+}));
+
 const cityCenter = {
 	lat: 46.77412867609914,
 	lng: 23.592646973597294,
@@ -77,6 +101,8 @@ const GoogleMapsKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
 export default function MapHome() {
 	const { user } = useContext(AuthContext);
+
+	const classes = useStyles();
 
 	const compareContext = useContext(LandCompare);
 	const focusLand = useContext(SpecificLand);
@@ -98,6 +124,8 @@ export default function MapHome() {
 	const [selected, setSelected] = useState(null);
 	const [selectedMarker, setSelectedMarker] = useState(null);
 	const [openSellerInfo, setOpenSellerInfo] = useState(false);
+
+	const [openModal, setOpenModal] = useState(true);
 
 	useEffect(() => {
 		setLands(TempLands);
@@ -482,6 +510,54 @@ export default function MapHome() {
 				{...{ setOpenSellerInfo, openSellerInfo, setNotify }}
 				seller={selectedLand.seller}
 			/>
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				className={classes.modal}
+				open={openModal}
+				onClose={() => setOpenModal(false)}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 100,
+				}}
+			>
+				<Fade in={openModal}>
+					<Container className={classes.containerModal}>
+						<Typography
+							variant="h5"
+							style={{
+								textAlign: "center",
+								paddingTop: "30px",
+								paddingBottom: "10px",
+							}}
+						>
+							Back-end server database unreachable at the moment...
+						</Typography>
+						<Typography variant="h6" style={{ textAlign: "center" }}>
+							<InfoIcon color="primary" /> Loaded static demonstrative database.
+						</Typography>
+						<Typography variant="h6" style={{ textAlign: "center" }}>
+							<InfoIcon color="primary" /> Creating & Editing entities not
+							supported.
+						</Typography>
+						<hr />
+						<Grid container justifyContent="flex-end">
+							<>
+								<Fab
+									variant="extended"
+									color="primary"
+									className={classes.removeIcon}
+									onClick={() => setOpenModal(false)}
+								>
+									<ArrowBackIcon />
+									Proceed
+								</Fab>
+							</>
+						</Grid>
+					</Container>
+				</Fade>
+			</Modal>
 		</>
 	);
 }
